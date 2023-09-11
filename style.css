@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300');
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,600&display=swap');
+
+.parent-description {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 25px 0;
+}
+
+.header-div {
+  margin-top: 50px;
+}
+
+.point {
+  font-family: 'Acme', sans-serif;
+}
+
+.game {
+  text-align: center;
+  width: 600px;
+  margin: auto;
+  display: none;
+  border: 1px solid #ccc;
+}
+
+.choices {
+  margin: 40px;
+  text-align: center;
+}
+
+.button, .true-button, .wrong-button {
+  background:#333333;
+  color:#ccc;
+  width: 250px;
+  height: 60px;
+  border: 0;
+  font-size: 18px;
+  border-radius: 4px;
+  font-family: "Raleway", sans-serif;
+  transition: 0.6s;
+  overflow: hidden;
+  margin: 10px;
+}
+.true-button{
+  background: #17d617;
+  color: #000;
+  font-weight: 900;
+}
+.wrong-button{
+  background: #e01f1f;
+  color: #000;
+  font-weight: 900;
+}
+
+img{
+  width: 30px;
+  height: auto;
+}
+
+
+.button:hover {
+  background: green;
+  cursor: pointer;
+}
+
+
+.results{
+  margin: 15px;
+  text-align: center;
+  padding: 30px;
+  display: none;
+}
+
+.display-country-name{
+  font-size: 32px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.not-displaying{
+  display: none;
+}
+
+#next{
+  display: none;
+}
