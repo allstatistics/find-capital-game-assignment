@@ -44,7 +44,6 @@ let remainingPathColor = COLOR_CODES.info.color;
 
 //start game function
 const startGame = () => {
-    console.log("Working startgame");
     intro.style.display = 'none';
     game.style.display = 'block';
     results.style.display = 'none';
