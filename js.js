@@ -39,8 +39,19 @@ let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
-
-
+axios
+    .get(`https://restcountries.com/v3.1/all`)
+    .then((response) => {
+        const country = response.data
+        // separating capitals and country names
+        country.map((country) => {
+            countryName.push(country.name.common)
+            countryCapitals.push(country.capital);
+        })
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 //start game function
 const startGame = () => {
@@ -50,30 +61,7 @@ const startGame = () => {
     correctAnswers = 0;
     wrongAnswers = 0;
     level = 1;
-
-
-    console.log(axios);
-    axios
-        .get(`https://restcountries.com/v3.1/all`)
-        .then((response) => {
-            const country = response.data
-
-            // separating capitals and country names
-            country.map((country) => {
-                countryName.push(country.name.common)
-                countryCapitals.push(country.capital);
-            })
-
-            randomCountryCapitalGenerator();
-        })
-        .catch((err) => {
-            console.log(err);
-
-        });
-
-
-
-
+    randomCountryCapitalGenerator();
 }
 
 
@@ -91,19 +79,14 @@ function exitGame() {
     trueAnswer.innerHTML = correctAnswers
     falseAnswer.innerHTML = wrongAnswers
     points.innerHTML = `${correctAnswers} points`
-    if(correctAnswers <=3) {
+    if (correctAnswers <= 3) {
         message.innerHTML = "Try harder next time"
-    }else if(correctAnswers<=6){
+    } else if (correctAnswers <= 6) {
         message.innerHTML = "You can do better"
-    }else{
+    } else {
         message.innerHTML = "You are a genius"
     }
 }
-
-
-const playAgain = document.getElementById('play-again').addEventListener('click', () => {
-    gameIntro();
-});
 
 // play again
 const gameIntro = () => {
@@ -111,11 +94,10 @@ const gameIntro = () => {
     intro.style.display = 'block';
 }
 
+const playAgain = document.getElementById('play-again').addEventListener('click', () => { gameIntro() });
+
 // start game command
-document.getElementById('start').addEventListener('click', () => {
-    results.style.display = 'none';
-    startGame();
-})
+document.getElementById('start').addEventListener('click', () => { startGame() })
 
 
 // check answer whether answer is correct or not
@@ -125,6 +107,8 @@ function checkAnswer(index) {
     document.getElementById('next').style.display = 'block';
     for (let i = 0; i < 4; i++) {
         document.querySelectorAll('img')[i].classList.remove('not-displaying')
+        document.querySelectorAll('input')[i].disabled = true;
+
     }
     document.getElementsByClassName('true-answer')[0].classList.remove('button')
     document.getElementsByClassName('true-answer')[0].classList.add('true-button')
@@ -139,11 +123,12 @@ function checkAnswer(index) {
     else {
         wrongAnswers++;
     }
+
 }
 
 
 // next button after choose answer
-const next = () => {randomCountryCapitalGenerator() };
+const next = () => { randomCountryCapitalGenerator() };
 
 
 // random country capital generator
@@ -214,34 +199,32 @@ function countDown() {
         </div>
 `;
 
+function onTimesUp() {
+    checkAnswer(0);
+    wrongAnswers++;
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+        document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
+
+        setCircleDasharray();
+        setRemainingPathColor(timeLeft);
+
+        if (timeLeft === 0) {
+            onTimesUp();
+        }
+    }, 1000);
+}
     startTimer();
-
-    function onTimesUp() {
-        next();
-        wrongAnswers++;
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timePassed = timePassed += 1;
-            timeLeft = TIME_LIMIT - timePassed;
-            document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
-
-            setCircleDasharray();
-            setRemainingPathColor(timeLeft);
-
-            if (timeLeft === 0) {
-                onTimesUp();
-            }
-        }, 1000);
-    }
 
     function formatTime(time) {
         let seconds = time % 60;
         if (seconds < 10) {
             seconds = `0${seconds}`;
         }
-
         return `${seconds}`;
     }
 
