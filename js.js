@@ -1,3 +1,4 @@
+// Variables
 let intro = document.getElementsByClassName('intro')[0]
 let game = document.getElementsByClassName('game')[0]
 let results = document.getElementsByClassName('results')[0]
@@ -12,15 +13,22 @@ let correctAnswers = 0
 let wrongAnswers = 0
 let randomCountryIndex;
 let level = 1;
+
+// Icon of true and wrong answers
 let tickIcon = "images/accept.png"
 let xIcon = "images/remove.png"
-const countryCapitals = []
+
+// Array of country names 
 const countryName = []
 
+// Array of country capitals
+const countryCapitals = []
 
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 8;
 const ALERT_THRESHOLD = 4;
+
+// Time limit
 const TIME_LIMIT = 15;
 const COLOR_CODES = {
     info: {
@@ -39,6 +47,8 @@ let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
+
+// Country API
 axios
     .get(`https://restcountries.com/v3.1/all`)
     .then((response) => {
@@ -53,6 +63,7 @@ axios
         console.log(err);
     });
 
+
 //start game function
 const startGame = () => {
     intro.style.display = 'none';
@@ -66,9 +77,7 @@ const startGame = () => {
 
 
 // exit from game when button is clicked
-const exit = document.getElementById('exit').addEventListener('click', () => {
-    exitGame();
-});
+const exit = document.getElementById('exit').addEventListener('click', () => { exitGame() });
 
 // exit game function
 function exitGame() {
@@ -100,7 +109,7 @@ const playAgain = document.getElementById('play-again').addEventListener('click'
 document.getElementById('start').addEventListener('click', () => { startGame() })
 
 
-// check answer whether answer is correct or not
+// checks answer whether answer is correct or not
 function checkAnswer(index) {
     clearInterval(timerInterval);
     document.getElementById('exit').style.display = 'none';
@@ -123,7 +132,6 @@ function checkAnswer(index) {
     else {
         wrongAnswers++;
     }
-
 }
 
 
@@ -199,25 +207,25 @@ function countDown() {
         </div>
 `;
 
-function onTimesUp() {
-    checkAnswer(0);
-    wrongAnswers++;
-}
+    function onTimesUp() {
+        checkAnswer(0);
+        wrongAnswers++;
+    }
 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
-        document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timePassed = timePassed += 1;
+            timeLeft = TIME_LIMIT - timePassed;
+            document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
 
-        setCircleDasharray();
-        setRemainingPathColor(timeLeft);
+            setCircleDasharray();
+            setRemainingPathColor(timeLeft);
 
-        if (timeLeft === 0) {
-            onTimesUp();
-        }
-    }, 1000);
-}
+            if (timeLeft === 0) {
+                onTimesUp();
+            }
+        }, 1000);
+    }
     startTimer();
 
     function formatTime(time) {
